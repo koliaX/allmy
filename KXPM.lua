@@ -12,6 +12,7 @@ local rof = Window:AddFolder"Rofls"
 local rems =Window:AddFolder"Remotes"
 local dan = Window:AddFolder"Danger"
 local serv = Window:AddFolder"Server"
+local skillrofls = Window:AddFolder"Skill rofls"
 
 local tweenservice = game:GetService("TweenService")
 local TeleportService = game:GetService("TeleportService")
@@ -24,13 +25,16 @@ local ltarget
 local slot = "Slot_1"
 local heart = {}
 local srs = {}
+local selskill
 
 local candyspam = false
 local Dashspam = false
 local Attackspam = false
 local Attackspamid = 1
 local Dropsteal = false
+local AutoMed = false
 
+local AbilityRoflsBase = require(game:GetService("ReplicatedStorage").Modules["Database_Modules"]["Skill_Data"])
 
 function tpt(targ)
 	if twtp == false then
@@ -70,6 +74,22 @@ function vallistupd(ply)
     	end
     end
 end
+function abilmainlistupd()
+    if abilmain then
+    	abilmain:Clear()
+    	for i,v in pairs(AbilityRoflsBase.Skills) do
+    		abilmain:AddValue(v, i)
+    	end
+    end
+end
+function abillistupd(cat)
+    if abillist then
+    	abillist:Clear()
+    	for i,v in pairs(cat) do
+    		abillist:AddValue(i)
+    	end
+    end
+end
 function prvorf(ply, val)
     if tostring(type(val)) ~= 'string' and val.GetChildren then
         local gcp = val:GetChildren()
@@ -83,6 +103,19 @@ function prvorf(ply, val)
     end
     print(val.Name, val.Value)
 end
+
+
+
+--idk 
+local function medone()
+    game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Meditating", true)
+    task.wait(0.5)
+    for i=1,25 do
+        game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Apply_Meditation", 1, true)
+        task.wait(0.1)
+    end
+end
+
 -- WHILE FOLDER
 local function candyspamfunc()
     while candyspam == true do
@@ -117,9 +150,12 @@ local function Dropstealfunc()
         task.wait(0.1)
     end 
 end
-
-
-
+local function AutoMeditate()
+    while AutoMed== true do
+        medone()
+        task.wait(1)
+    end 
+end
 
 
 
@@ -270,10 +306,34 @@ rems:AddToggle({text = "Steal drop from map", flag = "toggle", state = false, ca
     Dropsteal = a
     Dropstealfunc()
 end})
+rems:AddToggle({text = "Automeditate", flag = "toggle", state = false, callback = function(a) 
+    AutoMed = a
+    AutoMeditate()
+end})
 
 rems:AddBox({text = "Take quest (name of npc) ", flag = "button", value = selserv, callback = function(a)
     game:GetService("ReplicatedStorage").Remotes.Quest_Remote:FireServer(a, "Add")
 end})
+
+-- 
+
+
+
+
+
+abilmain = skillrofls:AddList({text = "Category", flag = "list", value = '' ,values = '', callback = function(a) 
+	abillistupd(a)
+end})
+
+
+abillist = skillrofls:AddList({text = "Skills", flag = "list", value = '' ,values = '', callback = function(a) 
+	selskill = a
+end})
+
+skillrofls:AddButton({text = "Give selected skill", flag = "button", callback = function() 
+    game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("EquipSkill", "Soul Reaper", selskill)
+end})
+
 
 --
 rof:AddButton({text = "Destroy", flag = "button", callback = function() Library:Destr() end})
@@ -313,5 +373,6 @@ pllistupd()
 -- livlistupd()
 serversupd()
 vallistupd(ptarget)
+abilmainlistupd()
 -- print("Toggle is currently:", Library.flags["toggle"])
 
