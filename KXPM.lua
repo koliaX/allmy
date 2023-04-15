@@ -1,6 +1,6 @@
 
 a = readfile('kxguilib/as.lua')
-local Library = loadstring(a)()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/koliaX/allmy/main/kxguilib/as.lua", true))()--loadstring(a)()
 
 local Window = Library:CreateWindow("Main")
 
@@ -286,6 +286,9 @@ end})
 
 rems:AddButton({text = "Senkaimon", flag = "button", callback = function() 
     game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Senkaimon")
+end})
+rems:AddButton({text = "Fight zanpakuto", flag = "button", callback = function() 
+    game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server_:InvokeServer("Zanpakuto_Fight", "Fight Zanpakuto")
 end})
 
 
