@@ -129,8 +129,6 @@ local function Dashspamfunc()
     while Dashspam == true do
         game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Dash")
         task.wait(0.2)
-        game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Flashstep")
-        task.wait(0.1)
     end
 end
 
