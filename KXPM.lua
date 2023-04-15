@@ -1,5 +1,5 @@
 
-a = readfile('kxguilib/as.lua')
+--a = readfile('kxguilib/as.lua')
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/koliaX/allmy/main/kxguilib/as.lua", true))()--loadstring(a)()
 
 local Window = Library:CreateWindow("Main")
