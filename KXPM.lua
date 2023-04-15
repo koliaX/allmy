@@ -13,6 +13,7 @@ local rems =Window:AddFolder"Remotes"
 local dan = Window:AddFolder"Danger"
 local serv = Window:AddFolder"Server"
 local skillrofls = Window:AddFolder"Skill rofls"
+local potrofls = Window:AddFolder"Potion things (only with 0)"
 
 local tweenservice = game:GetService("TweenService")
 local TeleportService = game:GetService("TeleportService")
@@ -127,6 +128,8 @@ end
 local function Dashspamfunc()
     while Dashspam == true do
         game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Dash")
+        task.wait(0.2)
+        game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Flashstep")
         task.wait(0.1)
     end
 end
@@ -287,6 +290,7 @@ rems:AddButton({text = "Senkaimon", flag = "button", callback = function()
     game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Senkaimon")
 end})
 
+
 rems:AddToggle({text = "Candy spam", flag = "toggle", state = false, callback = function(a) 
     candyspam = a
     candyspamfunc()
@@ -317,8 +321,18 @@ end})
 
 -- 
 
+potrofls:AddButton({text = "Health Potion", flag = "button", callback = function() 
+    game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Health_Potion", nil, "Drink")
+end})
+potrofls:AddButton({text = "Ignition Potion", flag = "button", callback = function() 
+    game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Ignition_Potion", nil, "Drink")
+end})
+potrofls:AddButton({text = "Reiatsu Potion", flag = "button", callback = function() 
+    game:GetService("ReplicatedStorage").Remotes.Server.Initiate_Server:FireServer("Reiatsu_Potion", nil, "Drink")
+end})
 
 
+--
 
 
 abilmain = skillrofls:AddList({text = "Category", flag = "list", value = '' ,values = '', callback = function(a) 
